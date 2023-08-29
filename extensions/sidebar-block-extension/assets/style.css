@@ -1,0 +1,114 @@
+/* style for sidebar app */
+.shopify-design-mode .product-pagesidebar {
+  display: block;
+} 
+ul.main_link li svg {
+  transform: rotate(270deg);
+  width: 11px;
+  height: 11px;
+  margin-right: 5px;
+}
+.grandchild_link {
+  display: none;
+}
+.section-template--19899190477091__product-grid-padding {
+  width: 75%;
+  margin-left: auto;
+}
+section#shopify-section-template--19899190477091__16902726373de4ae73 {
+  width: 30%;
+}
+.product-pagesidebar {
+    float: left;
+    display: none;
+}
+.product-pagesidebar.showsidebar {
+  display: block;
+}
+section#shopify-section-template--19143390724397__16896557124f4c47e9 {
+    float: left;
+}
+.product-pagesidebar #firstlabel {
+    font-size: 28px;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.product-pagesidebar #secondlabel {
+      font-size: 16px;
+    line-height: 36px;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.product-pagesidebar #thirdlabel {
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: capitalize;
+    text-decoration: none;
+}
+ul.main_link {
+    padding: 0;
+    list-style: none;
+}
+ul.child_link {
+    padding: 0;
+	list-style: none;
+}
+ul.grandchild_link {
+  padding: 0 10px;
+	list-style: none;
+}
+.product-pagesidebar #toggle {
+  display: none;
+} 
+/*****media query start*********/
+@media only screen and (max-device-width: 767px) {
+.product-pagesidebar {
+    float: none;
+}
+.main_link {
+  text-align: left;
+}
+.product-pagesidebar {
+    padding-top: 48px;
+}
+.product-pagesidebar 
+ svg.icon.icon-caret {
+    transform: rotate(268deg);
+    width: 12px;
+    margin-right: 4px;
+}
+.product-pagesidebar #toggle {
+  width: 25px;
+}
+.product-pagesidebar #toggle div {
+  width: 100%;
+  height: 3px;
+  margin: 7px auto;
+  transition: all 0.8s;
+  backface-visibility: hidden;
+}
+.product-pagesidebar #toggle.on .one {
+  transform: rotate(45deg) translate(3px, 3px);
+}
+.product-pagesidebar #toggle.on .two {
+  opacity: 0;
+}
+.product-pagesidebar #toggle.on .three {
+  transform: rotate(-45deg) translate(11px, -11px);
+}
+.product-pagesidebar #toggle {
+  display: block;
+}
+.product-pagesidebar #menu {
+  color: #333;
+ /* border: 1px solid white;*/
+  text-align: center;
+  display: none;
+}
+.product-pagesidebar {
+  padding-top: 10px;
+}
+}
+/******** media query end ******/

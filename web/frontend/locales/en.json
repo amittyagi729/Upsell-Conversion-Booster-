@@ -1,0 +1,37 @@
+{
+  "HomePage": {
+    "heading": "Product Sidebar Menu App for Shopify: Enhance Your Store's Product Page. 🎉",
+    "learnMore": "Learn more about building out your app in <ShopifyTutorialLink>this Shopify tutorial</ShopifyTutorialLink> 📚",
+    "startPopulatingYourApp": "Ready to go? Start populating your app with some sample products to view and test in your store.",
+    "title": "Product Sidebar Menu App",
+    "trophyAltText": "Nice work on building a Shopify app",
+    "yourAppIsReadyToExplore": "Easy-to-Use Drag-and-Drop Interface: Creating your ideal sidebar menu is a breeze with our intuitive drag-and-drop interface. Simply add, remove, or reorder menu items effortlessly, even if you have little to no technical knowledge."
+  },
+  "NavigationMenu": {
+    "pageName": "How it work"
+  },
+  "NotFound": {
+    "description": "Check the URL and try again, or use the search bar to find what you need.",
+    "heading": "There is no page at this address"
+  },
+  "PageName": {
+    "body": "Body",
+    "heading": "Heading",
+    "primaryAction": "Sidebar",
+    "secondaryAction": "App",
+    "title": "How it work?"
+  },
+  "ProductsCard": {
+    "description": "Sample products are created with a default title and price. You can remove them at any time.",
+    "errorCreatingProductsToast": "There was an error creating products",
+    "populateProductsButton": {
+      "one": "Populate {{count}} product",      "other": "Populate {{count}} product"
+    },
+    "productsCreatedToast": {
+      "one": "{{count}} product created!",
+      "other": "{{count}} products created!"
+    },
+    "title": "Product Counter",
+    "totalProductsHeading": "TOTAL PRODUCTS"
+  }
+}

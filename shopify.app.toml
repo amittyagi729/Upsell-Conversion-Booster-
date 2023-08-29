@@ -1,0 +1,27 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "ads-products-sidebar"
+client_id = "f625ae69499143ba34d3b72dba0ecdd8"
+application_url = "https://lion-wound-ec-instead.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products,read_themes"
+
+[auth]
+redirect_urls = [
+  "https://lion-wound-ec-instead.trycloudflare.com/auth/callback",
+  "https://lion-wound-ec-instead.trycloudflare.com/auth/shopify/callback",
+  "https://lion-wound-ec-instead.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-07"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "devteammase.myshopify.com"

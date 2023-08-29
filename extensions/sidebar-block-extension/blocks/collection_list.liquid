@@ -1,0 +1,200 @@
+<link rel="stylesheet" href="{{ 'style.css' | asset_url }}"> 
+{% assign pro_collection = product.collections %}
+{% assign product_tags_string = product.tags | join: ' ' %}
+{% assign collectionspro = product.collections | first %}  
+{% if block.settings.mobileview %}
+<style>
+.shopify-design-mode .product-pagesidebar {
+    float: none;
+}
+.shopify-design-mode .main_link {
+  text-align: left;
+}
+.shopify-design-mode .product-pagesidebar {
+    padding-top: 48px;
+}
+.shopify-design-mode .product-pagesidebar 
+ svg.icon.icon-caret {
+    transform: rotate(268deg);
+    width: 12px;
+    margin-right: 4px;
+}
+.shopify-design-mode .product-pagesidebar #toggle {
+  width: 25px;
+}
+.shopify-design-mode .product-pagesidebar #toggle div {
+  width: 100%;
+  height: 3px;
+  background: #000;
+  margin: 7px auto;
+  transition: all 0.8s;
+  backface-visibility: hidden;
+}
+.shopify-design-mode .product-pagesidebar #toggle.on .one {
+  transform: rotate(45deg) translate(3px, 3px);
+}
+.shopify-design-mode .product-pagesidebar #toggle.on .two {
+  opacity: 0;
+}
+.shopify-design-mode .product-pagesidebar #toggle.on .three {
+  transform: rotate(-45deg) translate(11px, -11px);
+}
+.shopify-design-mode .product-pagesidebar #toggle {
+  display: block;
+}
+.shopify-design-mode .product-pagesidebar #menu {
+  color: #333;
+  border: 1px solid white;
+  text-align: center;
+  display: none;
+}
+.shopify-design-mode .product-pagesidebar {
+  padding-top: 10px;
+}
+</style>
+{%- endif -%}
+<style>
+  {% assign header_font = block.settings.text_font_family %}
+    {{ header_font | font_face }}  
+   {% if block.settings.colour2 != blank %} 
+  .currentCat{
+  color: {{ block.settings.colour2 }}!important;
+  font-weight: 600 !important;
+  }
+  {% endif %}
+  .currentCatS{
+  color: {{ block.settings.colour3 }} !important;
+  font-weight: 600 !important;
+  } 
+.product-pagesidebar #toggle div {
+  background: {{ block.settings.colourtoggle }};
+}
+</style>
+<!-- Ads sidebar menu start -->
+
+{% assign beatles = block.settings.adsparam | split: "," %}
+{% assign ads_param = beatles | join: ' ' %}
+{%- if block.settings.previewad -%}
+<div class="product-pagesidebar" >
+<div id="toggle">
+<div class="one">&nbsp;</div>  
+  <div class="two">&nbsp;</div>
+  <div class="three">&nbsp;</div>
+</div> 
+<div id="menu" class="desktop-view"> 
+  <nav role="navigation">
+    <ul class="main_link">
+      {%- for link in linklists[block.settings.sidebar_menu_id].links -%}
+        <li>
+          <a id="firstlabel" {% if collectionspro.title == link.title %} class="currentCat" {% endif %} style="color:{{ block.settings.colour }};font-family:{{ header_font.family }},{{ header_font.fallback_families }};font-size:{{ block.settings.first_font_size | append:'px' }};" href="{{ link.url }}" >
+            {{ link.title }}
+          </a>
+          {%- if link.links != blank -%}
+            <ul class="child_link">
+              {%- for child_link in link.links -%}
+                <li>
+                  <a id="secondlabel" {% for collection in product.collections %}
+          {% assign collectionspro1 = collection.title %}   
+          {% for collection in product.collections %}
+                {% assign collectionspro1 = collection.title %}   
+                {% if collectionspro1 contains child_link.title %} class="currentCatS" {% endif %}
+              {%- endfor -%}
+            {%- endfor -%} style="color:{{ block.settings.colour }};font-family:{{ header_font.family }},{{ header_font.fallback_families }};font-size:{{ block.settings.second_font_size | append:'px' }};" href="{{ child_link.url }}" {% if child_link.active %}aria-current="page"{% endif %}>
+                    {{ child_link.title }}
+                  </a>
+                  {%- if child_link.links != blank -%}
+              <ul {% for collection in product.collections %}
+                {% assign collectionspro1 = collection.title %}   
+                {% if collectionspro1 contains child_link.title %}style="display:block;" {% endif %}
+              {%- endfor -%} class="{{ child_link.title }} grandchild_link" >
+                      {%- for grandchild_link in child_link.links -%}
+                        <li><svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6" width="15" heigh="15">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+                            </path></svg> <a id="thirdlabel" {% for collection in product.collections %}
+                {% assign collectionspro1 = collection.title %}   
+                {% if collectionspro1 contains grandchild_link.title %} class="currentCat" {% endif %}
+              {%- endfor -%}
+             style="color: {{ block.settings.colour }};font-family: {{ header_font.family }},{{ header_font.fallback_families }};font-size: {{ block.settings.third_font_size | append:'px' }};" href="{{ grandchild_link.url }}" {% if grandchild_link.active %}aria-current="page"{% endif %}>
+                            {{ grandchild_link.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </li>
+        {%- endfor -%}
+    </ul>
+  </nav>
+</div> 
+{%- endif -%}
+<!-- Ads sidebar menu end -->
+{%- if product.template_suffix == '' -%}
+{% assign protemplate = 'default_template' %}
+{%- else -%}
+{% assign protemplate = product.template_suffix %}
+{%- endif -%}
+{{ protemplate }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script> $(".product-pagesidebar #toggle").click(function() {
+  $(this).toggleClass("on");
+  $(".product-pagesidebar #menu").slideToggle();
+});
+// Function to get the value of a specific query parameter
+  var url_param  = $(location).attr('href').split("?");
+  var param      = (url_param[1]);
+  var result = param.split('=');
+  const DefineString= "{{ ads_param }}";
+  var incStr = DefineString.includes(result[0]);
+  console.log(incStr);
+  if( incStr == true  ){
+  $('.product-pagesidebar').addClass('showsidebar');
+    } 
+
+// Set a cookie
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=https://admin.shopify.com`;
+}
+
+// Get a cookie by name
+function getCookie(name) {
+  const cookies = document.cookie.split('; ');
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split('=');
+    if (cookieName === name) {
+      return decodeURIComponent(cookieValue);
+    }
+  }
+  return null;
+}
+
+// Example usage
+//setCookie('{{ protemplate }}', '{{ ads_param }}', 30);
+localStorage.setItem('{{ protemplate }}', '{{ ads_param }}');
+//const username = getCookie('username'); // Retrieve the value of the 'username' cookie
+</script>
+</div> 
+{% schema %}
+{
+  "name": "Collection Sidebar",
+  "target": "section",
+  "settings": [
+{ "type": "link_list", "id": "sidebar_menu_id", "label": "Menu" },
+{ "type": "color", "id": "colour", "label": "All Text Default Colour", "default": "#000000" },
+{ "type": "color", "id": "colour3", "label": "Second Label Active Color", "default": "#000000" },
+{ "type": "color", "id": "colour2", "label":  "Third Label Active Color", "default": "#000000" },
+{ "type": "color", "id": "colourtoggle", "label":  "Mobile Toggle Menu Color", "default": "#000000" },
+{ "type": "font_picker", "id": "text_font_family", "label": "Font Family", "default": "helvetica_n4" },
+{ "type": "range","id": "first_font_size", "min":  10, "max":  38, "step":  1,"unit": "px" ,"label": "First Font size","default":  30 },
+{ "type": "range","id": "second_font_size", "min": 10, "max":  38, "step":  1,"unit": "px" ,"label": "Second Font size","default":  22 },
+{ "type": "range","id": "third_font_size", "min":  10, "max":  38, "step":  1,"unit": "px" ,"label": "Third font_size size","default":  18 },
+{ "type": "checkbox", "id": "previewad", "label": "Do you want to make this sidebar appear for shopping ad URL's?", "default": false },
+{ "type": "checkbox", "id": "mobileview", "label": "Sidebar layout mobile preview", "default": false },
+{ "type": "text", "id": "adsparam", "label": "Enter here", "info": "NOTE: Please enter above box first parameter name from your ads Url after ? with comma separated  Eg: p1,p2,etc"  }
+ ]
+} 
+{% endschema %} 
