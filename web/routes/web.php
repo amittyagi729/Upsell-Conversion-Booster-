@@ -3,7 +3,7 @@
 use App\Exceptions\ShopifyProductCreatorException;
 use App\Lib\AuthRedirection;
 use App\Lib\EnsureBilling;
-use App\Lib\ProductCreator;
+use App\Lib\ProductCeator;
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -55,21 +55,29 @@ Route::get('/api/auth', function (Request $request) {
     return AuthRedirection::redirect($request);
 });
 
-
 Route::post('/api/submit-data', [ApiController::class, 'submitData']);
 Route::get('/api/data', [ApiController::class, 'retrieveData']);
 Route::delete('/api/delete-data/{id}', [ApiController::class, 'deleteData']);
-Route::post('/api/fetch-shopify-data', [ApiController::class, 'fetchShopifyData']);
-Route::get('/api/products', [ApiController::class, 'getProducts']);
-// Route::get('/api/data', function (Request $request, $response) {
-//     $db = new SQLite3('database.sqlite'); // Connect to your SQLite database
-//     $query = $db->query('SELECT * FROM products');
-//     $data = [];
-//     while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
-//         $data[] = $row;
-//     }
-//     return $response->withJson($data);
-// });
+
+Route::get('/api/fetch-shopify-data', [ApiController::class, 'fetchShopifyData']);
+Route::get('/api/products/', [ApiController::class, 'getProducts']);
+Route::get('/api/productssearch/', [ApiController::class, 'searchProducts']);
+Route::get('/api/getallproduct/', [ApiController::class, 'getAllProducts']);
+Route::get('/api/getallproduct2/', [ApiController::class, 'getAllProducts2']);
+
+Route::get('/api/fetchProductslink/', [ApiController::class, 'fetchProducts']);
+
+Route::get('/api/productsdownloads/', [ApiController::class, 'productsDownload']);
+Route::get('/api/getProductsByPage/', [ApiController::class, 'getProductsByPage']);
+Route::get('/api/getProductLinks/', [ApiController::class, 'getProductLinks']);
+
+Route::get('/api/getProductLinks22/', [ApiController::class, 'getProductLinks22']);
+Route::get('/api/getProductLinks33/', [ApiController::class, 'getProductLinks33']);
+
+Route::get('/api/getProductLinksParallel/', [ApiController::class, 'getProductLinksParallel']);
+Route::get('/api/bulkDownloadProducts/', [ApiController::class, 'bulkDownloadProducts']);
+
+Route::get('/api/runBulkOperation/', [ApiController::class, 'runBulkOperation']);
 
 Route::get('/api/auth/callback', function (Request $request) {
     $session = OAuth::callback(
@@ -103,14 +111,14 @@ Route::get('/api/auth/callback', function (Request $request) {
     return redirect($redirectUrl);
 });
 
-Route::get('/api/products/count', function (Request $request) {
-    /** @var AuthSession */
-    $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
+// Route::get('/api/products/count', function (Request $request) {
+//     /** @var AuthSession */
+//     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
 
-    $client = new Rest($session->getShop(), $session->getAccessToken());
-    $result = $client->get('products/count');
-    return response($result->getDecodedBody());
-})->middleware('shopify.auth');
+//     $client = new Rest($session->getShop(), $session->getAccessToken());
+//     $result = $client->get('products/count');
+//     return response($result->getDecodedBody());
+// })->middleware('shopify.auth');
 
 
 
@@ -131,38 +139,38 @@ Route::get('/api/products/count', function (Request $request) {
 // })->middleware('shopify.auth');
 
 
-Route::get('/api/products/create', function (Request $request) {
-    /** @var AuthSession */
-    $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
+// Route::get('/api/products/create', function (Request $request) {
+//     /** @var AuthSession */
+//     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
 
-    $success = $code = $error = null;
-    try {
-        ProductCreator::call($session, 5);
-        $success = true;
-        $code = 200;
-        $error = null;
-    } catch (\Exception $e) {
-        $success = false;
+//     $success = $code = $error = null;
+//     try {
+//         ProductCreator::call($session, 5);
+//         $success = true;
+//         $code = 200;
+//         $error = null;
+//     } catch (\Exception $e) {
+//         $success = false;
 
-        if ($e instanceof ShopifyProductCreatorException) {
-            $code = $e->response->getStatusCode();
-            $error = $e->response->getDecodedBody();
-            if (array_key_exists("errors", $error)) {
-                $error = $error["errors"];
-            }
-        } else {
-            $code = 500;
-            $error = $e->getMessage();
-        }
+//         if ($e instanceof ShopifyProductCreatorException) {
+//             $code = $e->response->getStatusCode();
+//             $error = $e->response->getDecodedBody();
+//             if (array_key_exists("errors", $error)) {
+//                 $error = $error["errors"];
+//             }
+//         } else {
+//             $code = 500;
+//             $error = $e->getMessage();
+//         }
 
-        Log::error("Failed to create products: $error");
-    } finally {
-        return response()->json(["success" => $success, "error" => $error], $code);
-    }
-})->middleware('shopify.auth');
+//         Log::error("Failed to create products: $error");
+//     } finally {
+//         return response()->json(["success" => $success, "error" => $error], $code);
+//     }
+// })->middleware('shopify.auth');
 
 Route::post('/api/webhooks', function (Request $request) {
-    try {
+    try {   
         $topic = $request->header(HttpHeaders::X_SHOPIFY_TOPIC, '');
 
         $response = Registry::process($request->header(), $request->getContent());

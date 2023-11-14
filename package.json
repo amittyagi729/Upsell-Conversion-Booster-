@@ -12,8 +12,18 @@
     "info": "shopify app info"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@shopify/app": "3.48.3",
+    "@shopify/app-bridge-react": "^3.7.9",
     "@shopify/cli": "3.48.3",
+    "@shopify/polaris": "^11.25.0",
+    "@shopify/polaris-icons": "^7.9.0",
+    "axios": "^1.5.0",
+    "csv-stringify": "^6.4.2",
+    "csv-writer": "^1.6.0",
+    "file-saver": "^2.0.5",
     "papaparse": "^5.4.1",
     "react-toastify": "^9.1.3"
   },

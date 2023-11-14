@@ -1,8 +1,8 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-name = "ads-products-sidebar"
-client_id = "f625ae69499143ba34d3b72dba0ecdd8"
-application_url = "https://aim-calcium-add-bullet.trycloudflare.com"
+name = "ads-sidebar-app-new"
+client_id = "840adb02451fa7b8e307784a1aff5e1a"
+application_url = "https://stone-dressing-determining-robbie.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://aim-calcium-add-bullet.trycloudflare.com/auth/callback",
-  "https://aim-calcium-add-bullet.trycloudflare.com/auth/shopify/callback",
-  "https://aim-calcium-add-bullet.trycloudflare.com/api/auth/callback"
+  "https://stone-dressing-determining-robbie.trycloudflare.com/auth/callback",
+  "https://stone-dressing-determining-robbie.trycloudflare.com/auth/shopify/callback",
+  "https://stone-dressing-determining-robbie.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -15,7 +15,6 @@ class AuthRedirection
     public static function redirect(Request $request, bool $isOnline = false): RedirectResponse
     {
         $shop = Utils::sanitizeShopDomain($request->query("shop"));
-
         if (Context::$IS_EMBEDDED_APP && $request->query("embedded", false) === "1") {
             $redirectUrl = self::clientSideRedirectUrl($shop, $request->query());
         } else {

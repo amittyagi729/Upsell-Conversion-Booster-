@@ -1,0 +1,216 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.theme.default.min.css">
+{% if block.settings.override-font_family == true %}
+<style>
+{% assign header_font = block.settings.font_family %}
+  {{ header_font | font_face }}
+.owl-item h3 { font-family:{{ header_font.family }}; }
+.product_price { font-family:{{ header_font.family }}; }
+button.add-to-cart-button { font-family:{{ header_font.family }}; }
+</style>
+{% endif %}
+
+{% if block.settings.override-fontColor_slider == true %}
+<style>
+.owl-item h3 {color: {{ block.settings.font_color }};}
+button.add-to-cart-button {background-image: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};border: none;}
+.product-on-sale-badge {background: {{ block.settings.badge_bg_color }};color: {{ block.settings.badge_color }};}
+button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};}
+</style>
+{% endif %}
+{% if block.settings.override-fontSize_slider == true %}
+<style>
+.product-on-sale-badge {font-size: {{ block.settings.badge_font_size | append: 'px' }};}
+.owl-item h3 {font-size: {{ block.settings.font_size | append: 'px' }};}
+{% endif %}
+</style>
+{% assign beatles = block.settings.ads_parameter | split: "," %}
+{% assign ads_param = beatles | join: ' ' %}
+<div class="product-pagesidebar1">
+{%- #Label: Select Collections # -%}
+{%- assign select_collections = block.settings.select_collections -%}
+<h2>{{ block.settings.main-heading }}</h2>
+<div class="pro_desc"><p>{{ block.settings.description }}<p></div>
+{% if block.settings.slider_showhide == 'show_collection_slider' %}
+<div class="owl-carousel">
+  {%- for collection in select_collections -%}
+      {% comment %}{{ collection.title }}{% endcomment %}
+      {%- for product in collection.products -%}
+          <a href="{{ product.handle }}" target="_blank"> <div class="item">
+        <div class="product-item">
+         {{ product.featured_image | img_url: '300x400' | img_tag: product.featured_image.alt }}
+          <h3>{{ product.title | truncate: 35 }}</h3>
+          {% if product.compare_at_price_max > product.price %}
+          <div class="product-on-sale-badge card__badge badge">
+           {{ block.settings.sale_badge }}
+          </div>
+        {% endif %}
+  {% if block.settings.hide_stock_bedge == false %}
+          {% if product.available %}
+            <div class="available_status card__badge badge">In Stock</div>
+          {% else %}
+          <div class="available_status card__badge badge">Sold out</div>
+          {% endif %}
+        {% endif %}
+<div class="product_price fdd12">
+  <span class="regular-price">
+    {{ product.compare_at_price | money_with_currency }}
+  </span>
+  <span class="sale-price">
+    {{ product.price | money_with_currency }}
+  </span>
+</div>
+    {% if block.settings.hide_add_to_cart_button == false %}
+          <form action="/cart/add" method="post">
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="add-to-cart-button">Add to Cart</button>
+          </form>
+          {% endif %}
+        </div></div></a>
+      {%- endfor -%}
+  {%- endfor -%}
+</div>
+{% endif %}
+{%- #Label: Select Products # -%}
+{%- assign select_products = block.settings.select_products -%}
+{% if block.settings.slider_showhide == 'show_product_slider' %}
+<div class="owl-carousel">
+{%- for product in select_products -%}
+   <a href="{{ product.handle }}" target="_blank">
+      <div class="item">
+        <div class="product-item">
+          {{ product.featured_image | img_url: '300x400' | img_tag: product.featured_image.alt }}
+          <h3>{{ product.title | truncate: 35 }}</h3>
+         {% if product.compare_at_price_max > product.price %}
+          <div class="product-on-sale-badge card__badge badge">
+           {{ block.settings.sale_badge }}
+          </div>
+        {% endif %}
+        {% if block.settings.hide_stock_bedge == false %}
+          {% if product.available %}
+            <div class="available_status card__badge badge">In Stock</div>
+          {% else %}
+          <div class="available_status card__badge badge">Sold out</div>
+          {% endif %}
+        {% endif %}
+<div class="product_price fdd12">
+  <span class="regular-price">
+    {{ product.compare_at_price | money_with_currency }}
+  </span>
+  <span class="sale-price">
+    {{ product.price | money_with_currency }}
+  </span>
+</div>
+{% if block.settings.hide_add_to_cart_button == false %}
+  {% if product.variants.size > 1 %}
+  <button type="submit" class="add-to-cart-button selec">Select Option</button>
+      {% else %}
+          <form action="/cart/add" method="post" class="dfgdgd">
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="add-to-cart-button add">Add to Cart</button>
+          </form>
+          {% endif %}
+      {% endif %}
+        </div></div></a>
+{%- endfor -%}
+</div>
+{% endif %}
+</div>
+<script type="text/javascript" src="{{ 'jquery.js' | asset_url }}"></script> 
+<script src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js"></script>
+<script>
+  jQuery(document).ready(function($) {
+   $('.owl-carousel').owlCarousel({
+  loop: false,
+  margin: 20,
+  nav: {{ block.settings.slider_arrow }},
+  autoplay: {{ block.settings.slider_autoplay }},
+  autoplayHoverPause: true,
+  responsive: {
+    0: {
+      items: 1
+    },
+    578: {
+      items: 2
+    },
+    1000: {
+      items: {{ block.settings.item_limit }}
+    }
+  }
+})
+  });
+</script>
+<script type="text/javascript">
+$( document ).ready(function() {
+
+// Sample query string
+const queryString = $(location).attr('href').split("?");
+// The parameter you want to search for
+const searchParam = "{{ ads_param }}";
+// Split the query string into individual parameters
+const parameters = queryString[1].split('&');
+console.log(parameters);
+// Initialize a variable to store the value of the parameter if found
+let foundValue = null;
+
+// Iterate through the parameters
+for (const param of parameters) {
+  const [key, value] = param.split('=');
+  console.log(key);
+  if (key === searchParam) {
+    foundValue = key;
+    break; // Exit the loop if the parameter is found
+  }
+}
+// Check if the parameter was found and log its value
+if (foundValue !== null) {
+  $('.product-pagesidebar1').addClass('showsidebar');
+  console.log(`The value of '${searchParam}' is '${foundValue}'`);
+} else {
+  console.log(`'${searchParam}' not found in the query string`);
+}
+  });
+</script>
+{% schema %}
+{
+  "name": "Collection Sidebar",
+  "target": "section",
+  "stylesheet": "stylesheet.css",
+  "enabled_on": {
+      "templates": ["product"]
+    },
+  "settings": [
+  { "type": "header", "content": "Collection Products Slider"},
+  { "type": "text", "id": "main-heading", "label": "Main heading" },
+  { "type": "checkbox", "id": "override-fontSize_slider", "label": "Override theme Font size with section setting", "default": false },
+  { "type": "checkbox", "id": "override-fontColor_slider", "label": "Override theme Font color with section setting", "default": false },
+  { "type": "checkbox", "id": "override-font_family", "label": "Override theme Font family with section setting", "default": false },
+  { "type": "richtext","id": "description","label": "Description"},
+  { "type": "select","id": "slider_showhide","label": "Slider show/hide","options": [{"value": "show_collection_slider","label": "Collection slider" },{"value": "show_product_slider","label": "Product slider"}],"default": "show_collection_slider","info": "Choose slider which one you want to display"},
+  { "type": "header", "content": "Collection Slider"},
+  { "type": "collection_list", "id": "select_collections","label": "Select Collections","limit": 20,"info": "Please select collection" },
+  { "type": "header", "content": "Product Slider"},
+  { "type": "product_list", "id": "select_products", "label": "Select Products" ,"limit": 20, "info": "Please select products"},
+  { "type": "header", "content": "Slider Settings"},
+  { "type": "number","id": "item_limit","label": "Number of columns on desktop","default": 4,"info": "Set slider columns limit for desktop" },
+  { "type": "radio","id": "slider_arrow","label": "Slider Arrow","options": [{"value": "true","label": "Enabled"},{"value": "false","label": "Disable"}],"default": "false","info": "Slider arrow setting"},
+  { "type": "radio","id": "slider_autoplay","label": "Slider Autoplay","options": [{"value": "true","label": "Enabled"},{ "value": "false","label": "Disable"}],"default": "false","info": "Slider Autoplay setting"},
+  { "type": "checkbox","id": "hide_add_to_cart_button","label": "Hide add to cart button","default": false,"info": "Check the  box for hide add to cart button from slider"},
+  { "type": "checkbox","id": "hide_stock_bedge","label": "Hide stock bedge","default": false,"info": "Check the  box for hide stock bedge"},
+  { "type": "header", "content": "Slider Style"},
+  { "type": "color_background","id": "button_bg_color","label": "Button bg color"},
+  { "type": "color","id": "button_color","label": "Button color"},
+  { "type": "font_picker","id": "font_family","label": "Font family","default": "helvetica_n4" },
+  { "type": "range","id": "font_size","label": "Font size","min": 5,"max": 30,"step": 1,"default": 15,"unit": "px" },
+  { "type": "color","id": "font_color","label": "Font Color","default": "#444" },
+  { "type": "text", "id": "sale_badge", "label": "Change Sale badge label", "default": "sale" },
+  { "type": "color_background","id": "badge_bg_color","label": "Badge bg color", "default": "linear-gradient(#ffffff, #000000)"},
+  { "type": "color","id": "badge_color","label": "Badge color", "default": "#ffffff"},
+  { "type": "range","id": "badge_font_size","label": "Badge Font size","min": 5,"max": 30,"step": 1,"default": 13,"unit": "px" },
+  { "type": "header", "content": "Ads parameter Setting" },
+  { "type": "text","id": "ads_parameter", "label": "Ads parameter","placeholder": "Enter Ads parameter","info": "Please enter ads parameter in above box for show/hide slider with url" }
+ ]
+} 
+{% endschema %}
