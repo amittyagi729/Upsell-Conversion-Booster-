@@ -1,0 +1,40 @@
+# fly.toml app configuration file generated for spring-water-4555 on 2023-11-16T08:16:08+05:30
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "spring-water-4555"
+primary_region = "syd"
+kill_signal = "SIGTERM"
+kill_timeout = 120
+console_command = "/code/manage.py shell"
+swap_size_mb = 512
+
+
+[build]
+image = "docker/dev-environments-default:stable-1"
+
+[env]
+  PORT = "8080"
+  SHOPIFY_APP_URL = "https://spring-water-4555.fly.dev"
+  SHOPIFY_API_KEY = "840adb02451fa7b8e307784a1aff5e1a"
+  SCOPES = "write_products,read_themes"
+  DB_CONNECTION="sqlite"
+  DB_DATABASE="database/database.sqlite"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+  
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
