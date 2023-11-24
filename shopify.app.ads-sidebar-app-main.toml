@@ -1,0 +1,27 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "ads-sideBar-APP-main"
+client_id = "1ec354619d4928985e634062c33372ed"
+application_url = "https://comfort-launched-offshore-drink.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products,read_themes"
+
+[auth]
+redirect_urls = [
+  "https://comfort-launched-offshore-drink.trycloudflare.com/auth/callback",
+  "https://comfort-launched-offshore-drink.trycloudflare.com/auth/shopify/callback",
+  "https://comfort-launched-offshore-drink.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-10"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "devteammase.myshopify.com"

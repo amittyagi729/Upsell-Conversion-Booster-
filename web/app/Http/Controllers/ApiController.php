@@ -1544,8 +1544,8 @@ GRAPHQL;
         }
 
         $results = Utils::settle($promises)->wait();
-      dd($results);
-      die;
+      //dd($results);
+      //die;
         foreach ($results as $key => $result) {
             if ($result['state'] === 'fulfilled') {
                 $assetResponse = $result['value'];
