@@ -4,10 +4,19 @@
 #
 
 app = "triocommerceshopify-purple-pond-9697"
-primary_region = "ord"
+primary_region = "lax"
 
 [build]
 
+[env]
+  DB_CONNECTION = "sqlite"
+  DB_DATABASE = "/app/database/database.sqlite"
+  PORT = "8080"
+  SCOPES = "write_products,read_themes"
+  SHOPIFY_API_KEY = "1ec354619d4928985e634062c33372ed"
+  SHOPIFY_API_SECRET="68c52bdd2a7d25640a8a82c78d590577"
+  SHOPIFY_APP_URL = "https://triocommerceshopify-purple-pond-9697.fly.dev"
+  
 [http_service]
   internal_port = 8080
   force_https = true

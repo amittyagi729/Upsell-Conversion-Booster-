@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/bin/bash
 
 # Clean up openrc and nginx configurations
 sed -i 's/hostname $opts/# hostname $opts/g' /etc/init.d/hostname

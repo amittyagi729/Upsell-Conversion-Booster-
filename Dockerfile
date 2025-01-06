@@ -10,6 +10,7 @@ RUN apk update && apk add --update nodejs npm \
 RUN docker-php-ext-install pdo
 
 COPY --chown=www-data:www-data web /app
+COPY --chmod=755 web/entrypoint.sh /app/entrypoint.sh
 WORKDIR /app
 
 # Overwrite default nginx config
@@ -19,8 +20,8 @@ COPY web/nginx.conf /etc/nginx/nginx.conf
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN composer install
-RUN touch /app/storage/db.sqlite
-RUN chown www-data:www-data /app/storage/db.sqlite
+RUN touch /app/database/database.sqlite
+RUN chown www-data:www-data /app/database/database.sqlite
 
 RUN cd frontend && npm install && npm run build
 RUN composer build

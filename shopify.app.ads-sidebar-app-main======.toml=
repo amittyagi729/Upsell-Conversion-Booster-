@@ -2,7 +2,7 @@
 
 name = "ads-sideBar-APP-main"
 client_id = "1ec354619d4928985e634062c33372ed"
-application_url = "https://comfort-launched-offshore-drink.trycloudflare.com"
+application_url = "https://casa-joined-transactions-mines.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://comfort-launched-offshore-drink.trycloudflare.com/auth/callback",
-  "https://comfort-launched-offshore-drink.trycloudflare.com/auth/shopify/callback",
-  "https://comfort-launched-offshore-drink.trycloudflare.com/api/auth/callback"
+  "https://casa-joined-transactions-mines.trycloudflare.com/auth/callback",
+  "https://casa-joined-transactions-mines.trycloudflare.com/auth/shopify/callback",
+  "https://casa-joined-transactions-mines.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
