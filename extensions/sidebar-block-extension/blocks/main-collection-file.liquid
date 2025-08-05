@@ -21,15 +21,15 @@ button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_c
 <style>
 .product-on-sale-badge {font-size: {{ block.settings.badge_font_size | append: 'px' }};}
 .owl-item h3 {font-size: {{ block.settings.font_size | append: 'px' }};}
-{% endif %}
 </style>
+{% endif %}
 {% assign beatles = block.settings.ads_parameter | split: "," %}
 {% assign ads_param = beatles | join: ' ' %}
 <div class="product-pagesidebar1">
 {%- #Label: Select Collections # -%}
 {%- assign select_collections = block.settings.select_collections -%}
 <h2>{{ block.settings.main-heading }}</h2>
-<div class="pro_desc"><p>{{ block.settings.description }}<p></div>
+<div class="pro_desc"><p>{{ block.settings.description }}</p></div>
 {% if block.settings.slider_showhide == 'show_collection_slider' %}
 <div class="owl-carousel">
   {%- for collection in select_collections -%}
@@ -37,7 +37,7 @@ button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_c
       {%- for product in collection.products -%}
           <a href="{{ product.handle }}" target="_blank"> <div class="item">
         <div class="product-item">
-         {{ product.featured_image | img_url: '300x400' | img_tag: product.featured_image.alt }}
+         {{ product.featured_image | image_url: width: 300, height: 300  }}
           <h3>{{ product.title | truncate: 35 }}</h3>
           {% if product.compare_at_price_max > product.price %}
           <div class="product-on-sale-badge card__badge badge">
@@ -60,7 +60,7 @@ button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_c
   </span>
 </div>
     {% if block.settings.hide_add_to_cart_button == false %}
-          <form action="/cart/add" method="post">
+          <form action="{{ routes.cart_add_url }}" method="post">
             <input type="hidden" name="id" value="{{ product.variants.first.id }}">
             <input type="hidden" name="quantity" value="1">
             <button type="submit" class="add-to-cart-button">Add to Cart</button>
@@ -79,7 +79,7 @@ button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_c
    <a href="{{ product.handle }}" target="_blank">
       <div class="item">
         <div class="product-item">
-          {{ product.featured_image | img_url: '300x400' | img_tag: product.featured_image.alt }}
+          {{ product.featured_image | image_url: width: 300, height: 300  }}
           <h3>{{ product.title | truncate: 35 }}</h3>
          {% if product.compare_at_price_max > product.price %}
           <div class="product-on-sale-badge card__badge badge">
