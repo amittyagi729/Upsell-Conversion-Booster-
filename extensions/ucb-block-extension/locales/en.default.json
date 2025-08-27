@@ -6,5 +6,23 @@
     "home": {
       "recommendationText": "Recommended Product!"
     }
-  }
+  },
+    "productsliderwidget": {
+      "name": "Product Slider Widget",
+      "description": "Display a slider of products from a specific collection.",
+      "settings": {
+        "collection": {
+          "label": "Collection",
+          "description": "Select the collection to display products from."
+        },
+        "itemsToShow": {
+          "label": "Items to Show",
+          "description": "Number of products to show in the slider."
+        },
+        "autoplay": {
+          "label": "Autoplay",
+          "description": "Enable or disable autoplay for the slider."
+        }
+      }
+    }
 }
