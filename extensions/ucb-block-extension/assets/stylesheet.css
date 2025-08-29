@@ -180,18 +180,19 @@ button.add-to-cart-button:hover {
   object-fit: cover; /* crop and fill */
   object-position: center;
 }
-.product-item h3 {
-  white-space: nowrap;       /* keep in single line */
-  overflow: hidden;          /* hide overflow */
-  text-overflow: ellipsis;   /* show ... if too long */
-  max-width: 180px;          /* adjust per design */
+/*.product-item h3 {
+  white-space: nowrap;       
+  overflow: hidden;         
+  text-overflow: ellipsis;   
+  max-width: 180px;          
 }
 .add-to-cart-button{
-  white-space: nowrap;       /* keep in single line */
-  overflow: hidden;          /* hide overflow */
-  text-overflow: ellipsis;   /* show ... if too long */
+  white-space: nowrap;       
+  overflow: hidden;          
+  text-overflow: ellipsis;   
   max-width: 120px;  
-}
+}*/
+
 /*****media query start*********/
 @media only screen and (max-device-width: 1000px) {
   .product-pagesidebar1 .owl-nav .owl-next {

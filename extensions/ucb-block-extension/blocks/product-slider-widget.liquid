@@ -4,23 +4,23 @@
   <style>
     {% assign header_font = block.settings.font_family %}
       {{ header_font | font_face }}
-    .owl-item h3 { font-family:{{ header_font.family }}; }
-    .product_price { font-family:{{ header_font.family }}; }
-    button.add-to-cart-button { font-family:{{ header_font.family }}; }
+    #shopify-section-{{ section.id }} .owl-item h3 { font-family:{{ header_font.family }}; }
+    #shopify-section-{{ section.id }} .product_price { font-family:{{ header_font.family }}; }
+   #shopify-section-{{ section.id }}  button.add-to-cart-button { font-family:{{ header_font.family }}; }
   </style>
 {% endif %}
 {% if block.settings['override-fontColor_slider'] == true %}
   <style>
-    .owl-item h3 {color: {{ block.settings.font_color }};}
-    button.add-to-cart-button {background-image: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};border: none;}
-    .product-on-sale-badge {background: {{ block.settings.badge_bg_color }};color: {{ block.settings.badge_color }};}
-    button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};}
+  #shopify-section-{{ section.id }} .owl-item h3 {color: {{ block.settings.font_color }};}
+  #shopify-section-{{ section.id }} button.add-to-cart-button {background-image: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};border: none;}
+  #shopify-section-{{ section.id }} .product-on-sale-badge {background: {{ block.settings.badge_bg_color }};color: {{ block.settings.badge_color }};}
+  #shopify-section-{{ section.id }} button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};}
   </style>
 {% endif %}
 {% if block.settings['override-fontSize_slider'] == true %}
   <style>
-    .product-on-sale-badge {font-size: {{ block.settings.badge_font_size | append: 'px' }};}
-    .owl-item h3 {font-size: {{ block.settings.font_size | append: 'px' }};}
+    #shopify-section-{{ section.id }} .product-on-sale-badge {font-size: {{ block.settings.badge_font_size | append: 'px' }};}
+    #shopify-section-{{ section.id }} .owl-item h3 {font-size: {{ block.settings.font_size | append: 'px' }};}
   </style>
 {% endif %}
 {% assign beatles = block.settings.ads_parameter | split: ',' %}
@@ -33,7 +33,7 @@
     <p>{{ block.settings.description }}</p>
   </div>
   {% if block.settings.slider_showhide == 'show_collection_slider' %}
-    <div class="owl-carousel">
+    <div class="owl-carousel {{ section.id }}">
       {%- for collection in select_collections -%}
         {% comment %}{{ collection.title }}{% endcomment %}
         {%- for product in collection.products -%}
@@ -41,7 +41,7 @@
             <div class="item">
               <div class="product-item">
                 <div class="slider-image ratio ratio-1x1">
-                {{ product.featured_image | image_url: width: 300, height: 300 | image_tag }}
+                  {{ product.featured_image | image_url: width: 300, height: 300 | image_tag }}
                 </div>
                 <h3>{{ product.title | truncate: 35 }}</h3>
                 {% if product.compare_at_price_max > product.price %}
@@ -68,7 +68,9 @@
                   <form action="{{ routes.cart_add_url }}" method="post" class="add-to-cart-form">
                     <input type="hidden" name="id" value="{{ product.variants.first.id }}">
                     <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="add-to-cart-button" alt="Add to Cart" title="Add to Cart">Add to Cart</button>
+                    <button type="submit" class="add-to-cart-button" alt="Add to Cart" title="Add to Cart">
+                      Add to Cart
+                    </button>
                   </form>
                 {% endif %}
               </div>
@@ -81,13 +83,13 @@
   {%- # Label: Select Products # -%}
   {%- assign select_products = block.settings.select_products -%}
   {% if block.settings.slider_showhide == 'show_product_slider' %}
-    <div class="owl-carousel">
+    <div class="owl-carousel {{ section.id }}">
       {%- for product in select_products -%}
         <a href="{{ product.handle }}" target="_blank">
           <div class="item">
             <div class="product-item">
               <div class="slider-image ratio ratio-1x1">
-              {{ product.featured_image | image_url: width: 300, height: 300 | image_tag }}
+                {{ product.featured_image | image_url: width: 300, height: 300 | image_tag }}
               </div>
               <h3>{{ product.title | truncate: 35 }}</h3>
               {% if product.compare_at_price_max > product.price %}
@@ -114,10 +116,12 @@
                 {% if product.variants.size > 1 %}
                   <button type="submit" class="add-to-cart-button selec">Select Option</button>
                 {% else %}
-                  <form action="{{ routes.cart_add_url }}" method="post" >
+                  <form action="{{ routes.cart_add_url }}" method="post">
                     <input type="hidden" name="id" value="{{ product.variants.first.id }}">
                     <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="add-to-cart-button add" alt="Add to Cart" title="Add to Cart">Add to Cart</button>
+                    <button type="submit" class="add-to-cart-button add" alt="Add to Cart" title="Add to Cart">
+                      Add to Cart
+                    </button>
                   </form>
                 {% endif %}
               {% endif %}
@@ -132,18 +136,18 @@
 <script src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js"></script>
 <script>
     jQuery(document).ready(function($) {
-     $('.owl-carousel').owlCarousel({
-    loop: false,
+     $('.owl-carousel.{{ section.id }}').owlCarousel({
+    loop: {{ block.settings.slider_loop }},
     margin: 20,
+    center: {{ block.settings.slider_center }},
     nav: {{ block.settings.slider_arrow }},
     autoplay: {{ block.settings.slider_autoplay }},
-    autoplayHoverPause: true,
     responsive: {
       0: {
-        items: 1
+        items: {{ block.settings.item_limit_mobile }}
       },
-      578: {
-        items: 2
+      600: {
+        items: {{ block.settings.item_limit_tablet }}
       },
       1000: {
         items: {{ block.settings.item_limit }}
@@ -225,7 +229,7 @@
     },
     { "type": "header", "content": "Collection Slider" },
     {
-      "type": "collection_list", 
+      "type": "collection_list",
       "id": "select_collections",
       "label": "Select Collections",
       "limit": 20,
@@ -248,6 +252,20 @@
       "info": "Set the maximum number of slider columns visible on desktop devices."
     },
     {
+      "type": "number",
+      "id": "item_limit_tablet",
+      "label": "Tablet Columns",
+      "default": 3,
+      "info": "Set the maximum number of slider columns visible on Tablet devices."
+    },
+    {
+      "type": "number",
+      "id": "item_limit_mobile",
+      "label": "Mobile Columns",
+      "default": 2,
+      "info": "Set the maximum number of slider columns visible on mobile devices."
+    },  
+    {
       "type": "radio",
       "id": "slider_arrow",
       "label": "Slider Arrow",
@@ -266,6 +284,26 @@
         { "value": "false", "label": "No" }
       ],
       "default": "false"
+    },
+    {
+      "type": "radio",
+      "id": "slider_center",
+      "label": "Slider Center mode",
+      "options": [
+        { "value": "true", "label": "Yes" },
+        { "value": "false", "label": "No" }
+      ],
+      "default": "false"
+    },
+    {
+      "type": "radio",
+      "id": "slider_loop",
+      "label": "Slider loop",
+      "options": [
+        { "value": "true", "label": "Yes" },
+        { "value": "false", "label": "No" }
+      ],
+      "default": "true"
     },
     {
       "type": "checkbox",

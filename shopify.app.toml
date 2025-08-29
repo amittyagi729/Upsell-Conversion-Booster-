@@ -3,7 +3,7 @@
 client_id = "cf52217f3a0125c0e579699807dbd9e9"
 name = "Upsell Conversion Booster"
 handle = "upsell-conversion-booster"
-application_url = "https://awareness-headers-monitor-effect.trycloudflare.com"
+application_url = "https://tobago-coming-ppm-cio.trycloudflare.com"
 embedded = true
 
 [build]
@@ -19,9 +19,9 @@ scopes = "write_products,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://awareness-headers-monitor-effect.trycloudflare.com/auth/callback",
-  "https://awareness-headers-monitor-effect.trycloudflare.com/auth/shopify/callback",
-  "https://awareness-headers-monitor-effect.trycloudflare.com/api/auth/callback"
+  "https://tobago-coming-ppm-cio.trycloudflare.com/auth/callback",
+  "https://tobago-coming-ppm-cio.trycloudflare.com/auth/shopify/callback",
+  "https://tobago-coming-ppm-cio.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]
