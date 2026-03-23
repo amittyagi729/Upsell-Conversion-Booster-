@@ -1,20 +1,23 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.theme.default.min.css">
+{%- assign slider_type = block.settings.slider_showhide -%}
+{%- assign select_collections = block.settings.select_collections -%}
+{%- assign select_products = block.settings.select_products -%}
+
+{% comment %} Override font family, font color and font size {% endcomment %}
 {% if block.settings['override-font_family'] == true %}
   <style>
-    {% assign header_font = block.settings.font_family %}
-      {{ header_font | font_face }}
-    #shopify-section-{{ section.id }} .owl-item h3 { font-family:{{ header_font.family }}; }
-    #shopify-section-{{ section.id }} .product_price { font-family:{{ header_font.family }}; }
-   #shopify-section-{{ section.id }}  button.add-to-cart-button { font-family:{{ header_font.family }}; }
+     {% assign header_font = block.settings.font_family %}
+       {{ header_font | font_face }}
+     #shopify-section-{{ section.id }} .owl-item h3 { font-family:{{ header_font.family }}; }
+     #shopify-section-{{ section.id }} .product_price { font-family:{{ header_font.family }}; }
+    #shopify-section-{{ section.id }}  button.add-to-cart-button { font-family:{{ header_font.family }}; }
   </style>
 {% endif %}
 {% if block.settings['override-fontColor_slider'] == true %}
   <style>
-  #shopify-section-{{ section.id }} .owl-item h3 {color: {{ block.settings.font_color }};}
-  #shopify-section-{{ section.id }} button.add-to-cart-button {background-image: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};border: none;}
-  #shopify-section-{{ section.id }} .product-on-sale-badge {background: {{ block.settings.badge_bg_color }};color: {{ block.settings.badge_color }};}
-  #shopify-section-{{ section.id }} button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};}
+    #shopify-section-{{ section.id }} .owl-item h3 {color: {{ block.settings.font_color }};}
+    #shopify-section-{{ section.id }} button.add-to-cart-button {background-image: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};border: none;}
+    #shopify-section-{{ section.id }} .product-on-sale-badge {background: {{ block.settings.badge_bg_color }};color: {{ block.settings.badge_color }};}
+    #shopify-section-{{ section.id }} button.add-to-cart-button:hover {background-color: {{ block.settings.button_bg_color }};color: {{ block.settings.button_color }};}
   </style>
 {% endif %}
 {% if block.settings['override-fontSize_slider'] == true %}
@@ -23,69 +26,80 @@
     #shopify-section-{{ section.id }} .owl-item h3 {font-size: {{ block.settings.font_size | append: 'px' }};}
   </style>
 {% endif %}
+{% comment %} Get slider item count {% endcomment %}
+{% assign cols_string = block.settings.columns_config | remove: '{' | remove: '}' | replace: '"', '' | strip %}
+{% assign parts = cols_string | split: ',' %}
+{% assign desktop = parts[0] | split: ':' | last | strip %}
+{% assign tablet = parts[1] | split: ':' | last | strip %}
+{% assign mobile = parts[2] | split: ':' | last | strip %}
+
 {% assign beatles = block.settings.ads_parameter | split: ',' %}
 {% assign ads_param = beatles | join: ' ' %}
-<div class="product-pagesidebar1">
+<div class="product-pagesidebar1 product-slider-widget">
   {%- # Label: Select Collections # -%}
-  {%- assign select_collections = block.settings.select_collections -%}
+  
   <h2>{{ block.settings['main-heading'] }}</h2>
   <div class="pro_desc">
     <p>{{ block.settings.description }}</p>
   </div>
-  {% if block.settings.slider_showhide == 'show_collection_slider' %}
+  {% if slider_type == 'show_collection_slider' %}
+    {% assign page_product = product %}
+    {% assign shown_products = '' %}
     <div class="owl-carousel {{ section.id }}">
       {%- for collection in select_collections -%}
-        {% comment %}{{ collection.title }}{% endcomment %}
         {%- for product in collection.products -%}
-          <a href="{{ product.handle }}" target="_blank">
-            <div class="item">
-              <div class="product-item">
-                <div class="slider-image ratio ratio-1x1">
-                  {{ product.featured_image | image_url: width: 300, height: 300 | image_tag }}
-                </div>
-                <h3>{{ product.title | truncate: 35 }}</h3>
-                {% if product.compare_at_price_max > product.price %}
-                  <div class="product-on-sale-badge card__badge badge">
-                    {{ block.settings.sale_badge }}
+          {% unless shown_products contains product.id or product.id == page_product.id %}
+            {% assign shown_products = shown_products | append: product.id | append: ',' %}
+            <a href="{{ product.url }}?{{ block.settings.ads_parameter }}">
+              <div class="item">
+                <div class="product-item">
+                  <div class="slider-image ratio ratio-1x1">
+                    {{ product.featured_image | image_url: width: 600, height: 600 | image_tag }}
                   </div>
-                {% endif %}
-                {% if block.settings.hide_stock_bedge == false %}
-                  {% if product.available %}
-                    <div class="available_status card__badge badge">In Stock</div>
-                  {% else %}
-                    <div class="available_status card__badge badge">Sold out</div>
+                  <h3>{{ product.title }}</h3>
+                  {% if product.compare_at_price_max > product.price %}
+                    <div class="product-on-sale-badge card__badge badge">
+                      {{ block.settings.sale_badge }}
+                    </div>
                   {% endif %}
-                {% endif %}
-                <div class="product_price">
-                  <span class="regular-price">
-                    {{ product.compare_at_price | money_with_currency }}
-                  </span>
-                  <span class="sale-price">
-                    {{ product.price | money_with_currency }}
-                  </span>
+                  {% if block.settings.hide_stock_bedge == false %}
+                    {% if product.available %}
+                      <div class="available_status card__badge badge">In Stock</div>
+                    {% else %}
+                      <div class="available_status card__badge badge">Sold out</div>
+                    {% endif %}
+                  {% endif %}
+                  <div class="product_price">
+                    <span class="regular-price">
+                      {{ product.compare_at_price | money_with_currency }}
+                    </span>
+                    <span class="sale-price">
+                      {{ product.price | money_with_currency }}
+                    </span>
+                  </div>
+                  {% if block.settings.hide_add_to_cart_button == false %}
+                    <form action="{{ routes.cart_add_url }}" method="post" class="add-to-cart-form">
+                      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                      <input type="hidden" name="quantity" value="1">
+                      <button type="submit" class="add-to-cart-button" alt="Add to Cart" title="Add to Cart">
+                        Add to Cart
+                      </button>
+                    </form>
+                  {% endif %}
                 </div>
-                {% if block.settings.hide_add_to_cart_button == false %}
-                  <form action="{{ routes.cart_add_url }}" method="post" class="add-to-cart-form">
-                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="add-to-cart-button" alt="Add to Cart" title="Add to Cart">
-                      Add to Cart
-                    </button>
-                  </form>
-                {% endif %}
               </div>
-            </div>
-          </a>
+            </a>
+          {% endunless %}
         {%- endfor -%}
       {%- endfor -%}
     </div>
   {% endif %}
   {%- # Label: Select Products # -%}
-  {%- assign select_products = block.settings.select_products -%}
-  {% if block.settings.slider_showhide == 'show_product_slider' %}
+  
+  {% if slider_type == 'show_product_slider' %}
     <div class="owl-carousel {{ section.id }}">
       {%- for product in select_products -%}
-        <a href="{{ product.handle }}" target="_blank">
+        <a href="{{ product.handle }}?{{ block.settings.ads_parameter }}">
           <div class="item">
             <div class="product-item">
               <div class="slider-image ratio ratio-1x1">
@@ -132,30 +146,31 @@
     </div>
   {% endif %}
 </div>
-<script type="text/javascript" src="{{ 'jquery.js' | asset_url }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js"></script>
 <script>
     jQuery(document).ready(function($) {
      $('.owl-carousel.{{ section.id }}').owlCarousel({
     loop: {{ block.settings.slider_loop }},
-    margin: 20,
+    lazyLoad: false,
+    animateOut: 'fadeOut',
+    margin: {{ block.settings.slider_margin }},
     center: {{ block.settings.slider_center }},
     nav: {{ block.settings.slider_arrow }},
     autoplay: {{ block.settings.slider_autoplay }},
     responsive: {
       0: {
-        items: {{ block.settings.item_limit_mobile }}
+        items: {{ mobile }}
       },
       600: {
-        items: {{ block.settings.item_limit_tablet }}
+        items: {{ tablet }}
       },
       1000: {
-        items: {{ block.settings.item_limit }}
+        items: {{ desktop}}
       }
     }
   })
     });
 </script>
+
 <script type="text/javascript">
   $(document).ready(function () {
     // Sample query string
@@ -164,14 +179,14 @@
     const searchParam = '{{ ads_param }}';
     // Split the query string into individual parameters
     const parameters = queryString[1].split('&');
-    console.log(parameters);
+    // console.log(parameters);
     // Initialize a variable to store the value of the parameter if found
     let foundValue = null;
 
     // Iterate through the parameters
     for (const param of parameters) {
       const [key, value] = param.split('=');
-      console.log(key);
+      //console.log(key);
       if (key === searchParam) {
         foundValue = key;
         break; // Exit the loop if the parameter is found
@@ -245,26 +260,12 @@
     },
     { "type": "header", "content": "Slider Settings" },
     {
-      "type": "number",
-      "id": "item_limit",
-      "label": "Desktop Columns",
-      "default": 4,
-      "info": "Set the maximum number of slider columns visible on desktop devices."
+      "type": "textarea",
+      "id": "columns_config",
+      "label": "Columns (Desktop, Tablet, Mobile)",
+      "default": "{ \"desktop\": 4, \"tablet\": 3, \"mobile\": 2 }",
+      "info": "Enter JSON like: { \"desktop\": 4, \"tablet\": 3, \"mobile\": 2 }"
     },
-    {
-      "type": "number",
-      "id": "item_limit_tablet",
-      "label": "Tablet Columns",
-      "default": 3,
-      "info": "Set the maximum number of slider columns visible on Tablet devices."
-    },
-    {
-      "type": "number",
-      "id": "item_limit_mobile",
-      "label": "Mobile Columns",
-      "default": 2,
-      "info": "Set the maximum number of slider columns visible on mobile devices."
-    },  
     {
       "type": "radio",
       "id": "slider_arrow",
@@ -304,6 +305,16 @@
         { "value": "false", "label": "No" }
       ],
       "default": "true"
+    },
+    {
+      "type": "range",
+      "id": "slider_margin",
+      "label": "Item Margin",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
     },
     {
       "type": "checkbox",

@@ -1,161 +1,238 @@
-{% assign collectionspro = product.collections | first %}  
+{% assign collectionspro = product.collections | first %}
 {% if block.settings.mobileview %}
-<style>
-.shopify-design-mode .product-pagesidebar {float: none;}
-.shopify-design-mode .main_link {text-align: left;}
-.shopify-design-mode .product-pagesidebar {padding-top: 48px;}
-.shopify-design-mode .product-pagesidebar 
- svg.icon.icon-caret {transform: rotate(268deg);width: 12px;margin-right: 4px;}
-.shopify-design-mode .product-pagesidebar #toggle {width: 25px;}
-.shopify-design-mode .product-pagesidebar #toggle div {width: 100%;height: 3px;background: #000;margin: 7px auto;transition: all 0.8s; backface-visibility: hidden;}
-.shopify-design-mode .product-pagesidebar #toggle.on .one {transform: rotate(45deg) translate(3px, 3px);}
-.shopify-design-mode .product-pagesidebar #toggle.on .two {opacity: 0;}
-.shopify-design-mode .product-pagesidebar #toggle.on .three {transform: rotate(-45deg) translate(11px, -11px);}
-.shopify-design-mode .product-pagesidebar #toggle {display: block;}
-.shopify-design-mode .product-pagesidebar #menu {color: #333;border: 1px solid white;text-align: center;display: none;}
-.shopify-design-mode .product-pagesidebar {padding-top: 10px;}
-</style>
+  <style>
+    .shopify-design-mode .product-pagesidebar {
+      float: none;
+    }
+    .shopify-design-mode .main_link {
+      text-align: left;
+    }
+    .shopify-design-mode .product-pagesidebar {
+      padding-top: 48px;
+    }
+    .shopify-design-mode .product-pagesidebar svg.icon.icon-caret {
+      transform: rotate(268deg);
+      width: 12px;
+      margin-right: 4px;
+    }
+    .shopify-design-mode .product-pagesidebar #toggle {
+      width: 25px;
+    }
+    .shopify-design-mode .product-pagesidebar #toggle div {
+      width: 100%;
+      height: 3px;
+      background: #000;
+      margin: 7px auto;
+      transition: all 0.8s;
+      backface-visibility: hidden;
+    }
+    .shopify-design-mode .product-pagesidebar #toggle.on .one {
+      transform: rotate(45deg) translate(3px, 3px);
+    }
+    .shopify-design-mode .product-pagesidebar #toggle.on .two {
+      opacity: 0;
+    }
+    .shopify-design-mode .product-pagesidebar #toggle.on .three {
+      transform: rotate(-45deg) translate(11px, -11px);
+    }
+    .shopify-design-mode .product-pagesidebar #toggle {
+      display: block;
+    }
+    .shopify-design-mode .product-pagesidebar #menu {
+      color: #333;
+      border: 1px solid white;
+      text-align: center;
+      display: none;
+    }
+    .shopify-design-mode .product-pagesidebar {
+      padding-top: 10px;
+    }
+  </style>
 {%- endif -%}
 <style>
-  {% assign header_font = block.settings.text_font_family %}
-  {{ header_font | font_face }}  
-  {% if block.settings.override-fontColor == true %}
-   {% if block.settings.colour2 != blank %} 
-  .currentCat{color: {{ block.settings.colour2 }}!important;font-weight: 600 !important;}
+    {% assign header_font = block.settings.text_font_family %}
+    {{ header_font | font_face }}
+    {% if block.settings.override-fontColor == true %}
+     {% if block.settings.colour2 != blank %}
+    .currentCat{color: {{ block.settings.colour2 }}!important;font-weight: 600 !important;}
+    {% endif %}
+    .currentCatS{color: {{ block.settings.colour3 }} !important;font-weight: 600 !important;}
   {% endif %}
-  .currentCatS{color: {{ block.settings.colour3 }} !important;font-weight: 600 !important;} 
-{% endif %}
-{% if block.settings.override-fontSize == true %}
-.product-pagesidebar #firstlabel {text-decoration: none; text-transform: capitalize;}
-.product-pagesidebar #secondlabel {line-height: 36px;text-decoration: none;text-transform: capitalize;}
-.product-pagesidebar #thirdlabel {font-weight: 400;text-transform: capitalize;text-decoration: none;}
-{% endif %}
-.product-pagesidebar #toggle div {background: {{ block.settings.colourtoggle }};}
+  {% if block.settings.override-fontSize == true %}
+  .product-pagesidebar #firstlabel {text-decoration: none; text-transform: capitalize;}
+  .product-pagesidebar #secondlabel {line-height: 36px;text-decoration: none;text-transform: capitalize;}
+  .product-pagesidebar #thirdlabel {font-weight: 400;text-transform: capitalize;text-decoration: none;}
+  {% endif %}
+  .product-pagesidebar #toggle div {background: {{ block.settings.colourtoggle }};}
 </style>
-{% assign beatles = block.settings.adsparam | split: "," %}
+{% assign beatles = block.settings.adsparam | split: ',' %}
 
-{% assign overrideStyle = block.settings.override-style %}
-{% assign overrideSize = block.settings.override-fontSize %}
-{% assign overrideFont = block.settings.override-fontFamily %}
-{% assign overrideColor = block.settings.override-fontColor %}
- 
+{% assign overrideStyle = block.settings['override-style'] %}
+{% assign overrideSize = block.settings['override-fontSize'] %}
+{% assign overrideFont = block.settings['override-fontFamily'] %}
+{% assign overrideColor = block.settings['override-fontColor'] %}
+
 {% assign ads_param = beatles | join: ' ' %}
 {% if block.settings.previewad == false %}
-<div class="product-pagesidebar" style="padding-top:{{ block.settings.top-padding | append: 'px' }};padding-bottom: {{ block.settings.bottom-padding | append: 'px' }}">
-<div id="toggle"> 
-<div class="one">&nbsp;</div>  
-  <div class="two">&nbsp;</div>
-  <div class="three">&nbsp;</div>
-</div> 
-<div id="menu" class="desktop-view"> 
-  <nav role="navigation">
-    <ul class="main_link">
-      {%- for link in linklists[block.settings.sidebar_menu_id].links -%}
-        <li>
-          <a id="firstlabel" {% if collectionspro.title == link.title %} class="currentCat" {% endif %} style="color:
-          {% if overrideColor == true %}{{ block.settings.colour }};{% endif %}
-         {% if overrideFont == true %}font-family:{{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
-         {% if overrideSize == true %}font-size:{{ block.settings.first_font_size | append: 'px' }};{% endif %}" href="{{ link.url }}" >{{ link.title }} </a>
-          {%- if link.links != blank -%}
-            <ul class="child_link">
-              {%- for child_link in link.links -%}
-                <li>
-                 <a id="secondlabel" {%- for collection in product.collections -%}
-                  {% assign collectionspro1 = collection.title %}   
-                    {% for collection in product.collections %}
-                      {% assign collectionspro1 = collection.title %}   
-                      {% if collectionspro1 contains child_link.title %} class="currentCatS" {% endif %}
-                    {%- endfor -%}
-                    {%- endfor -%} style="{% if overrideColor == true %}color: {{ block.settings.colour }};{% endif %}
-                    {% if overrideFont == true %}font-family: {{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
-                   {% if overrideSize == true %}font-size: {{ block.settings.second_font_size | append: 'px' }};{% endif %}" href="{{ child_link.url }}" >
-                    {{ child_link.title }}
-                  </a>
-          {%- if child_link.links != blank -%}
-            <ul {% for collection in product.collections %}
-                    {% assign collectionspro1 = collection.title %}   
-                    {% if collectionspro1 contains child_link.title %}style="display:block;" {% endif %}
-                    {%- endfor -%} class="{{ child_link.title1 }} grandchild_link" >
-                  {%- for grandchild_link in child_link.links -%}
-                        <li class="thirdrow"><svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6" width="15" heigh="15">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
-                            </path></svg> <a id="thirdlabel" {% for collection in product.collections %}
-                                {% assign collectionspro1 = collection.title %}   
-                                {% if collectionspro1 contains grandchild_link.title %} class="currentCat" {% endif %}
-                              {%- endfor -%}
-                             style="color: {% if overrideColor == true %}{{ block.settings.colour }};{% endif %}
-                            {% if overrideFont == true %} font-family: {{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
-                            {% if overrideSize == true %} font-size: {{ block.settings.third_font_size | append: 'px' }};{% endif %}" href="{{ grandchild_link.url }}" {% if grandchild_link.active %}aria-current="page"{% endif %}>
-                            {{ grandchild_link.title }}
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                    </ul> 
-                  {%- endif -%}
-                </li>
-              {%- endfor -%}
-            </ul>
-          {%- endif -%}
-        </li>
-      {%- endfor -%}
-    </ul>
-  </nav>
-</div> 
-</div>
+  <div
+    class="product-pagesidebar"
+    style="padding-top:{{ block.settings.top-padding | append: 'px' }};padding-bottom: {{ block.settings.bottom-padding | append: 'px' }}"
+  >
+    <div id="toggle">
+      <div class="one">&nbsp;</div>
+      <div class="two">&nbsp;</div>
+      <div class="three">&nbsp;</div>
+    </div>
+    <div id="menu" class="desktop-view">
+      <nav role="navigation">
+        <ul class="main_link">
+          {%- for link in linklists[block.settings.sidebar_menu_id].links -%}
+            <li>
+              <a
+                id="firstlabel"
+                {% if collectionspro.title == link.title %}
+                  class="currentCat"
+                {% endif %}
+                style="
+                  color:
+                   {% if overrideColor == true %}{{ block.settings.colour }};{% endif %}
+                  {% if overrideFont == true %}font-family:{{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
+                  {% if overrideSize == true %}font-size:{{ block.settings.first_font_size | append: 'px' }};{% endif %}
+                "
+                href="{{ link.url }}"
+              >
+                {{- link.title }}
+              </a>
+              {%- if link.links != blank -%}
+                <ul class="child_link">
+                  {%- for child_link in link.links -%}
+                    <li>
+                      <a
+                        id="secondlabel"
+                        {%- for collection in product.collections -%}
+                          {% assign collectionspro1 = collection.title %}
+                          {% for collection in product.collections %}
+                            {% assign collectionspro1 = collection.title %}
+                            {% if collectionspro1 contains child_link.title %} class="currentCatS" {% endif %}
+                          {%- endfor -%}
+                        {%- endfor -%}
+                        style="
+                          {% if overrideColor == true %}color: {{ block.settings.colour }};{% endif %}
+                           {% if overrideFont == true %}font-family: {{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
+                          {% if overrideSize == true %}font-size: {{ block.settings.second_font_size | append: 'px' }};{% endif %}
+                        "
+                        href="{{ child_link.url }}"
+                      >
+                        {{ child_link.title }}
+                      </a>
+                      {%- if child_link.links != blank -%}
+                        <ul
+                          {% for collection in product.collections %}
+                            {% assign collectionspro1 = collection.title %}
+                            {% if collectionspro1 contains child_link.title %}style="display:block;" {% endif %}
+                          {%- endfor -%}
+                          class="{{ child_link.title1 }} grandchild_link"
+                        >
+                          {%- for grandchild_link in child_link.links -%}
+                            <li class="thirdrow">
+                              <svg
+                                aria-hidden="true"
+                                focusable="false"
+                                role="presentation"
+                                class="icon icon-caret"
+                                viewBox="0 0 10 6"
+                                width="15"
+                                heigh="15"
+                              >
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+                                </path>
+                              </svg>
+                              <a
+                                id="thirdlabel"
+                                {% for collection in product.collections %}
+                                  {% assign collectionspro1 = collection.title %}
+                                  {% if collectionspro1 contains grandchild_link.title %} class="currentCat" {% endif %}
+                                {%- endfor -%}
+                                style="
+                                  color: {% if overrideColor == true %}{{ block.settings.colour }};{% endif %}
+                                  {% if overrideFont == true %} font-family: {{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
+                                  {% if overrideSize == true %} font-size: {{ block.settings.third_font_size | append: 'px' }};{% endif %}
+                                "
+                                href="{{ grandchild_link.url }}"
+                                {% if grandchild_link.active %}
+                                  aria-current="page"
+                                {% endif %}
+                              >
+                                {{ grandchild_link.title }}
+                              </a>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+  </div>
 {%- endif -%}
 {% comment %} Ads sidebar menu end {% endcomment %}
-<script type="text/javascript" src="{{ 'jquery.js' | asset_url }}"></script> 
+<script type="text/javascript" src="{{ 'jquery.js' | asset_url }}"></script>
 <script type="text/javascript">
-$( document ).ready(function() {
- $(".product-pagesidebar #toggle").click(function() {
-  $(this).toggleClass("on");
-  $(".product-pagesidebar #menu").slideToggle();
-});
-// Sample query string
-const queryString = $(location).attr('href').split("?");
-// The parameter you want to search for
-const searchParam = "{{ ads_param }}";
-// Split the query string into individual parameters
-const parameters = queryString[1].split('&');
-//console.log(parameters);
-// Initialize a variable to store the value of the parameter if found
-let foundValue = null;
-// Iterate through the parameters
-for (const param of parameters) {
-  const [key, value] = param.split('=');
-  //console.log(key);
-  if (key === searchParam) {
-    foundValue = key;
-    break; // Exit the loop if the parameter is found
-  }
-}
-// Check if the parameter was found and log its value
-if (foundValue !== null) {
-  $('.product-pagesidebar').addClass('showsidebar');
-  console.log(`The value of '${searchParam}' is '${foundValue}'`);
-} else {
-  console.log(`'${searchParam}' not found in the query string`);
-}
-  $(document).ready(function() {
-  // Attach a resize event listener to the window
-  $(window).resize(function() {
-    // Function to get and display window width
-    function getWindowWidth() {
-      const windowWidth = $(window).width();
-      if (windowWidth <= 1024) {
-        $('.product-pagesidebar').addClass('mobileresponsive');
-        console.log(`Window width: ${windowWidth}px`);
-      } else {
-        // Remove the class if the window width is greater than 1024
-        $('.product-pagesidebar').removeClass('mobileresponsive');
+  $(document).ready(function () {
+    $('.product-pagesidebar #toggle').click(function () {
+      $(this).toggleClass('on');
+      $('.product-pagesidebar #menu').slideToggle();
+    });
+    // Sample query string
+    const queryString = $(location).attr('href').split('?');
+    // The parameter you want to search for
+    const searchParam = '{{ ads_param }}';
+    // Split the query string into individual parameters
+    const parameters = queryString[1].split('&');
+    //console.log(parameters);
+    // Initialize a variable to store the value of the parameter if found
+    let foundValue = null;
+    // Iterate through the parameters
+    for (const param of parameters) {
+      const [key, value] = param.split('=');
+      //console.log(key);
+      if (key === searchParam) {
+        foundValue = key;
+        break; // Exit the loop if the parameter is found
       }
     }
-  // Call the function when the window is resized
-    getWindowWidth();
-  });
-  // Initial call to get and display window width
-  //getWindowWidth();
-}); 
+    // Check if the parameter was found and log its value
+    if (foundValue !== null) {
+      $('.product-pagesidebar').addClass('showsidebar');
+      console.log(`The value of '${searchParam}' is '${foundValue}'`);
+    } else {
+      console.log(`'${searchParam}' not found in the query string`);
+    }
+    $(document).ready(function () {
+      // Attach a resize event listener to the window
+      $(window).resize(function () {
+        // Function to get and display window width
+        function getWindowWidth() {
+          const windowWidth = $(window).width();
+          if (windowWidth <= 1024) {
+            $('.product-pagesidebar').addClass('mobileresponsive');
+            console.log(`Window width: ${windowWidth}px`);
+          } else {
+            // Remove the class if the window width is greater than 1024
+            $('.product-pagesidebar').removeClass('mobileresponsive');
+          }
+        }
+        // Call the function when the window is resized
+        getWindowWidth();
+      });
+      // Initial call to get and display window width
+      //getWindowWidth();
+    });
   });
 </script>
 
@@ -169,27 +246,92 @@ if (foundValue !== null) {
   },
   "settings": [
     { "type": "link_list", "id": "sidebar_menu_id", "label": "Select Menu" },
-    { "type": "checkbox", "id": "override-fontSize", "label": "Override default theme font size with App settings", "default": false },
-    { "type": "checkbox", "id": "override-fontFamily", "label": "Override default theme font family with App settings", "default": false },
-    { "type": "checkbox", "id": "override-fontColor", "label": "Override default theme font color with App settings", "default": false },
-    { "type": "header","content": "Typography"},
-    { "type": "header","content": "Colors"},
+    {
+      "type": "checkbox",
+      "id": "override-fontSize",
+      "label": "Override default theme font size with App settings",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "override-fontFamily",
+      "label": "Override default theme font family with App settings",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "override-fontColor",
+      "label": "Override default theme font color with App settings",
+      "default": false
+    },
+    { "type": "header", "content": "Typography" },
+    { "type": "header", "content": "Colors" },
     { "type": "color", "id": "colour", "label": "Primary Text Color", "default": "#000000" },
     { "type": "color", "id": "colour3", "label": "Second Label Active Color", "default": "#000000" },
     { "type": "color", "id": "colour2", "label": "Third Label Active Color", "default": "#000000" },
     { "type": "color", "id": "colourtoggle", "label": "Mobile Toggle Color", "default": "#000000" },
-    { "type": "header","content":"Font settings"},
+    { "type": "header", "content": "Font settings" },
     { "type": "font_picker", "id": "text_font_family", "label": "Font Family", "default": "helvetica_n4" },
-    { "type": "header","content":"Font Size"},
-    { "type": "range","id": "first_font_size", "min": 10, "max": 100, "step": 1, "unit": "px" ,"label": "First Label Font Size","default": 30 },
-    { "type": "range","id": "second_font_size", "min": 10, "max": 100, "step": 1, "unit": "px" ,"label": "Second Label Font Size","default": 20 },
-    { "type": "range","id": "third_font_size", "min": 10, "max": 100, "step": 1, "unit": "px" ,"label": "Third Label Font Size","default": 14 },
-    { "type": "text", "id": "adsparam", "label": "Enter here current template name", "info": "NOTE: Please enter above box your current template name .eg:default-template" },
+    { "type": "header", "content": "Font Size" },
+    {
+      "type": "range",
+      "id": "first_font_size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "First Label Font Size",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "second_font_size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Second Label Font Size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "third_font_size",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Third Label Font Size",
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "adsparam",
+      "label": "Enter here current template name",
+      "info": "NOTE: Please enter above box your current template name .eg:default-template"
+    },
     { "type": "checkbox", "id": "previewad", "label": "Hide Widget", "default": false },
     { "type": "checkbox", "id": "mobileview", "label": "Widget layout mobile preview", "default": false },
-    { "type": "header","content":"Section padding"},
-    { "type": "range","id": "top-padding", "min": 0, "max": 100, "step": 1, "unit": "px" ,"label": "Top Padding","default": 0 },
-    { "type": "range","id": "bottom-padding", "min": 0, "max": 100, "step": 1, "unit": "px" ,"label": "Bottom Padding","default": 0 }
+    { "type": "header", "content": "Section padding" },
+    {
+      "type": "range",
+      "id": "top-padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "bottom-padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 0
+    }
   ]
 }
 {% endschema %}

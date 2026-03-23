@@ -1,0 +1,33 @@
+{% if block.settings.enable_assets %}
+  <!-- Owl Carousel CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.theme.default.min.css">
+
+  <!-- jQuery (load only if not already present) -->
+  <script>
+    if (typeof window.jQuery === "undefined") {
+      var scriptTag = document.createElement("script");
+      scriptTag.src = "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js";
+      scriptTag.defer = false;
+      document.head.appendChild(scriptTag);
+    }
+  </script>
+
+  <!-- Owl Carousel JS -->
+  <script src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js" defer></script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Slider Assets",
+  "target": "head",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_assets",
+      "label": "Enable Owl Carousel Assets",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

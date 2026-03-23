@@ -3,11 +3,10 @@
 client_id = "cf52217f3a0125c0e579699807dbd9e9"
 name = "Upsell Conversion Booster"
 handle = "upsell-conversion-booster"
-application_url = "https://tobago-coming-ppm-cio.trycloudflare.com"
+application_url = "https://sydney-improve-ft-maybe.trycloudflare.com"
 embedded = true
 
 [build]
-include_config_on_deploy = true
 automatically_update_urls_on_dev = true
 
 [webhooks]
@@ -15,13 +14,13 @@ api_version = "2025-04"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products,read_themes"
+scopes = "write_products,read_themes,read_orders,read_customers"
 
 [auth]
 redirect_urls = [
-  "https://tobago-coming-ppm-cio.trycloudflare.com/auth/callback",
-  "https://tobago-coming-ppm-cio.trycloudflare.com/auth/shopify/callback",
-  "https://tobago-coming-ppm-cio.trycloudflare.com/api/auth/callback"
+  "https://sydney-improve-ft-maybe.trycloudflare.com/auth/callback",
+  "https://sydney-improve-ft-maybe.trycloudflare.com/auth/shopify/callback",
+  "https://sydney-improve-ft-maybe.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

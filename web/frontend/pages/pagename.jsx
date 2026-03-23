@@ -1,72 +1,120 @@
-import { Card, Page, Layout, TextContainer, Text } from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
-import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
+import {
+  Page,
+  Card,
+  ResourceList,
+  Button,
+  Spinner,
+  TextField,
+  Select,
+  Stack,
+} from "@shopify/polaris";
 
-export default function PageName() {
-  const { t } = useTranslation();
+export default function ProductsPage() {
+  const [products, setProducts] = useState([]);
+  const [pageInfo, setPageInfo] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [cursor, setCursor] = useState({ after: null, before: null });
+
+  const [search, setSearch] = useState("");
+  const [vendorFilter, setVendorFilter] = useState("");
+  const [productTypeFilter, setProductTypeFilter] = useState("");
+
+  const pageSize = 3; // Show 3 products per page
+
+  const fetchProducts = async (after = null, before = null) => {
+    setLoading(true);
+
+    let url = `/api/api/fetchkap?pageSize=${pageSize}`;
+    if (after) url += `&after=${after}`;
+    if (before) url += `&before=${before}`;
+    if (search) url += `&title=${encodeURIComponent(search)}`;
+    if (vendorFilter) url += `&vendor=${encodeURIComponent(vendorFilter)}`;
+    if (productTypeFilter) url += `&product_type=${encodeURIComponent(productTypeFilter)}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.data?.products) {
+      setProducts(data.data.products.edges);
+      setPageInfo(data.data.products.pageInfo);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [search, vendorFilter, productTypeFilter]);
+
   return (
-    <Page>
-      <TitleBar
-        title={t("PageName.title")}
-        primaryAction={{
-          content: t("PageName.primaryAction"),
-          onAction: () => console.log("Primary action"),
-        }}
-        secondaryActions={[
-          {
-            content: t("PageName.secondaryAction"),
-            onAction: () => console.log("Secondary action"),
-          },
-        ]}
-      />
-      <Layout>
-        <Layout.Section>
-        <Card
-        title='Step-by-Step Guide to Adding a Sidebar to Your Shopify Product Page'
-        sectioned
-        primaryFooterAction=''
-      >
-        <TextContainer spacing="loose">
-          <p>Enhancing your product page with a sidebar can significantly improve the navigation and overall shopping experience for your customers. Here's a simple step-by-step guide on how to add a sidebar to your Shopify product page:</p>
-  
-          <Text as="h4" variant="headingMd">Step 1: Accessing the Theme Customization</Text>
-          
-          <p>1. Log in to your Shopify admin panel.</p>
-          <p>2. Navigate to "Online Store" in the left-hand menu and click on "Customize" to access your theme editor.</p>
-          
-          <Text as="h2" variant="headingMd">Step 2: Selecting the Product Page</Text>
-          
-          <p>1. Once you're in the theme editor, locate the top dropdown menu, and select "Products" from the available options. This will take you to the customization options for your product page.</p>
-          
-          <Text as="h2" variant="headingMd">Step 3: Choosing a Template</Text>
-          
-          <p>1. In the product page customization view, click on "Click here" to reveal a list of available templates. </p>
-          <p>2. Select either the "Default" template if you want to keep the existing layout with the sidebar or choose a "Custom" template if you have already created a custom product page template that includes a sidebar. </p>
-          
-          <Text as="h2" variant="headingMd">Step 4: Adding the Collection Sidebar Section </Text>
-          
-          <p>1. With the template selected, navigate to the right-hand block sidebar within the theme editor.</p>
-          <p>2. Click on "Add section" to open a list of available sections you can add to your product page.</p>
-          <p>3. Look for and select "Collection Sidebar" from the list of Apps sections. This will add the sidebar to your product page layout.</p>
-          
-          <Text as="h2" variant="headingMd">Step 5: Managing the Navigation Section</Text>
-          <p>1. After adding the "Collection Sidebar" section, you can now manage its content and configuration.</p>
-          <p> 2. Customize the section by clicking on it in the theme editor. You can modify the content, select the navigation menu  you want to display in the sidebar, and adjust the settings according to your preferences.</p>
-          <p>3. You may have options to change the sidebar's appearance, such as its color, font, and layout, depending on your theme's capabilities.</p>
-          
-          <Text as="h2" variant="headingMd">Step 6: Preview and Publish</Text>
-          
-          <p>1. Before finalizing the changes, use the "Preview" button to see how the sidebar looks on your product page.</p>
-          <p>2. If you're satisfied with the changes, click on the "Publish" button to make the sidebar live on your Shopify product pages.</p>
-          
-          <Text as="h4" variant="headingMd">Conclusion:</Text>
-          <p>
-            Adding a sidebar to your Shopify product page is an excellent way to enhance navigation and make it easier for customers to discover and browse your collections. By following this step-by-step guide, you can seamlessly integrate a sidebar into your product page and improve the overall shopping experience for your store visitors. Happy selling!
-            </p>
-        </TextContainer>
-        </Card>
-        </Layout.Section>
-      </Layout>
+    <Page title="Products">
+      <Card sectioned>
+        {/* Filters */}
+        <Stack distribution="fillEvenly" spacing="loose" alignment="center">
+          <TextField
+            label="Search"
+            value={search}
+            onChange={(value) => setSearch(value)}
+            placeholder="Search by title"
+          />
+          <TextField
+            label="Vendor"
+            value={vendorFilter}
+            onChange={(value) => setVendorFilter(value)}
+            placeholder="Filter by vendor"
+          />
+          <TextField
+            label="Product Type"
+            value={productTypeFilter}
+            onChange={(value) => setProductTypeFilter(value)}
+            placeholder="Filter by product type"
+          />
+        </Stack>
+      </Card>
+
+      <Card sectioned>
+        {loading ? (
+          <Spinner accessibilityLabel="Loading products" />
+        ) : (
+          <ResourceList
+            resourceName={{ singular: "product", plural: "products" }}
+            items={products}
+            renderItem={(item) => {
+              const { node } = item;
+              const media = node.images.edges[0]?.node?.originalSrc;
+
+              return (
+                <ResourceList.Item
+                  id={node.id}
+                  media={media ? <img src={media} alt={node.title} width="50" /> : null}
+                  accessibilityLabel={`View ${node.title}`}
+                >
+                  <h3>{node.title}</h3>
+                  <p>{node.vendor}</p>
+                  <p>{node.productType}</p>
+                </ResourceList.Item>
+              );
+            }}
+          />
+        )}
+      </Card>
+
+      {/* Pagination */}
+      <div style={{ marginTop: "16px", display: "flex", gap: "8px" }}>
+        <Button
+          onClick={() => fetchProducts(null, pageInfo.startCursor)}
+          disabled={!pageInfo.hasPreviousPage}
+        >
+          Previous
+        </Button>
+        <Button
+          onClick={() => fetchProducts(pageInfo.endCursor, null)}
+          disabled={!pageInfo.hasNextPage}
+        >
+          Next
+        </Button>
+      </div>
     </Page>
   );
 }
