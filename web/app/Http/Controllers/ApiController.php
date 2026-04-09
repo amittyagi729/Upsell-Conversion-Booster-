@@ -16,8 +16,6 @@ use GuzzleHttp\Promise\Utils;
 class ApiController extends Controller
 {
 
-
-
     public function getProductLinks33(Request $request)
     {
         // Get the Shopify API access token and shop from the request
@@ -787,10 +785,12 @@ GRAPHQL;
     // New function to get product links with parallel requests
    public function getProductLinksParallel(Request $request)
 {
-    $shopifySession = $request->get('shopifySession');
+    //$session = $request->get('shopifySession');
+    //$shopifyshop = $session->getShop();
     $getshopifytoken = DB::table('sessions')->orderBy('id', 'desc')->first();
     $shopifyApiToken = $getshopifytoken->access_token;
     $shopifyshop = $getshopifytoken->shop;
+  
     $query = $request->input('query');
 
     // Build the URL for fetching products

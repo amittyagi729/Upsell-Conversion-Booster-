@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use GuzzleHttp\Client;
-class Session extends Model
-{
-    use HasFactory;
 
-   protected $fillable = [
+class ShopifySession extends Model
+{
+        protected $fillable = [
             'session_id',
             'shop',
             'is_online',
@@ -25,6 +23,4 @@ class Session extends Model
             'locale',
             'collaborator',
         ];
-
 }
-

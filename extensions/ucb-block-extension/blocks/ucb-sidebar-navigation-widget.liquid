@@ -67,10 +67,10 @@
 </style>
 {% assign beatles = block.settings.adsparam | split: ',' %}
 
-{% assign overrideStyle = block.settings['override-style'] %}
-{% assign overrideSize = block.settings['override-fontSize'] %}
-{% assign overrideFont = block.settings['override-fontFamily'] %}
-{% assign overrideColor = block.settings['override-fontColor'] %}
+<!--{% assign overridestyle = block.settings['override-style'] %}-->
+{% assign overridesize = block.settings['override-fontSize'] %}
+{% assign overridefont = block.settings['override-fontFamily'] %}
+{% assign overridecolor = block.settings['override-fontColor'] %}
 
 {% assign ads_param = beatles | join: ' ' %}
 {% if block.settings.previewad == false %}
@@ -95,9 +95,9 @@
                 {% endif %}
                 style="
                   color:
-                   {% if overrideColor == true %}{{ block.settings.colour }};{% endif %}
-                  {% if overrideFont == true %}font-family:{{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
-                  {% if overrideSize == true %}font-size:{{ block.settings.first_font_size | append: 'px' }};{% endif %}
+                   {% if overridecolor == true %}{{ block.settings.colour }};{% endif %}
+                  {% if overridefont == true %}font-family:{{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
+                  {% if overridesize == true %}font-size:{{ block.settings.first_font_size | append: 'px' }};{% endif %}
                 "
                 href="{{ link.url }}"
               >
@@ -117,9 +117,9 @@
                           {%- endfor -%}
                         {%- endfor -%}
                         style="
-                          {% if overrideColor == true %}color: {{ block.settings.colour }};{% endif %}
-                           {% if overrideFont == true %}font-family: {{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
-                          {% if overrideSize == true %}font-size: {{ block.settings.second_font_size | append: 'px' }};{% endif %}
+                          {% if overridecolor == true %}color: {{ block.settings.colour }};{% endif %}
+                           {% if overridefont == true %}font-family: {{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
+                          {% if overridesize == true %}font-size: {{ block.settings.second_font_size | append: 'px' }};{% endif %}
                         "
                         href="{{ child_link.url }}"
                       >
@@ -154,9 +154,9 @@
                                   {% if collectionspro1 contains grandchild_link.title %} class="currentCat" {% endif %}
                                 {%- endfor -%}
                                 style="
-                                  color: {% if overrideColor == true %}{{ block.settings.colour }};{% endif %}
-                                  {% if overrideFont == true %} font-family: {{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
-                                  {% if overrideSize == true %} font-size: {{ block.settings.third_font_size | append: 'px' }};{% endif %}
+                                  color: {% if overridecolor == true %}{{ block.settings.colour }};{% endif %}
+                                  {% if overridefont == true %} font-family: {{ header_font.family }},{{ header_font.fallback_families }};{% endif %}
+                                  {% if overridesize == true %} font-size: {{ block.settings.third_font_size | append: 'px' }};{% endif %}
                                 "
                                 href="{{ grandchild_link.url }}"
                                 {% if grandchild_link.active %}

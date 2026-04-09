@@ -82,6 +82,7 @@ class EnsureShopifySession
 
             if ($proceed) {
                 $request->attributes->set('shopifySession', $session);
+                 $request->attributes->set('shopUrl', $session->getShop());
                 return $next($request);
             }
         }
